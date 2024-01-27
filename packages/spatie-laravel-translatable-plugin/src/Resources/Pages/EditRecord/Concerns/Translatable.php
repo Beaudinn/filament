@@ -89,13 +89,13 @@ trait Translatable
 
         $translatableAttributes = static::getResource()::getTranslatableAttributes();
 
-        $this->otherLocaleData[$this->oldActiveLocale] = Arr::only($this->data, $translatableAttributes);
+		$this->otherLocaleData[$this->oldActiveLocale] = Arr::only($this->form->getState(), $translatableAttributes);
 
-        $this->data = [
-            ...Arr::except($this->data, $translatableAttributes),
-            ...$this->otherLocaleData[$this->activeLocale] ?? [],
-        ];
-
+		$this->fillFormWithDataAndCallHooks([
+			...Arr::except($this->data, $translatableAttributes),
+			...$this->otherLocaleData[$this->activeLocale] ?? [],
+		]);
+		
         unset($this->otherLocaleData[$this->activeLocale]);
     }
 
